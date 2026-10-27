@@ -178,10 +178,32 @@
     </div>
     <figcaption><span class="cap-title">Untitled — Commission</span><span class="cap-year">2026</span></figcaption>
   </figure>
+
+  <!-- Lari -->
+  <figure class="art-card">
+    <div class="slide" data-images="images/lari.png,images/lari1.png">
+      <div class="art-media">
+        <img src="images/lari.png" alt="Lari drawing" loading="lazy">
+        <div class="art-overlay">
+          <div class="art-details">
+            <h3 class="art-name">Commission</h3>
+            <div class="art-rule"></div>
+            <div class="art-info-row"><span class="art-label">Materials</span><span class="art-value">Graphite</span></div>
+            <div class="art-info-row"><span class="art-label">Year</span><span class="art-value">2026</span></div>
+            <div class="art-info-row"><span class="art-label">Size</span><span class="art-value">A6</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="next" type="button" aria-label="View next image">&gt;</button>
+    </div>
+    <figcaption><span class="cap-title">Commission</span><span class="cap-year">2026</span></figcaption>
+  </figure>
+
 </section>
 </main>
 <footer>© 2026 Marcela Poli</footer>
 <script>
+// Multi-image slides carousel
 document.querySelectorAll('.slide[data-images]').forEach(function (slide) {
   var files = slide.dataset.images.split(',');
   var img = slide.querySelector('img');
@@ -192,6 +214,41 @@ document.querySelectorAll('.slide[data-images]').forEach(function (slide) {
       e.stopPropagation();
       i = (i + 1) % files.length;
       img.src = files[i];
+    });
+  }
+});
+
+// Click on artwork to dismiss or toggle blur & details
+document.querySelectorAll('.slide').forEach(function (slide) {
+  slide.addEventListener('click', function (e) {
+    if (e.target.closest('.next')) return; // Don't trigger on arrow button click
+
+    // On mobile / touch devices: toggle .show-info
+    if (window.matchMedia('(hover: none)').matches || e.pointerType === 'touch') {
+      var wasOpen = slide.classList.contains('show-info');
+      document.querySelectorAll('.slide.show-info').forEach(function (s) {
+        s.classList.remove('show-info');
+      });
+      if (!wasOpen) {
+        slide.classList.add('show-info');
+      }
+    } else {
+      // On desktop: click toggles .hide-info to dismiss or re-show blur while hovering
+      slide.classList.toggle('hide-info');
+    }
+  });
+
+  // When mouse leaves the card, reset dismiss state so next hover works normally
+  slide.addEventListener('mouseleave', function () {
+    slide.classList.remove('hide-info');
+  });
+});
+
+// Tap outside to dismiss on mobile
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('.slide')) {
+    document.querySelectorAll('.slide.show-info').forEach(function (s) {
+      s.classList.remove('show-info');
     });
   }
 });

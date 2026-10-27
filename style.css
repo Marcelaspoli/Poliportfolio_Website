@@ -50,16 +50,52 @@ footer{border-top:1px solid var(--ink);padding:28px 4vw;text-align:center;color:
 .social svg{width:26px;height:26px} 
 }
 /* Artwork frames & Hover Blur Details */
-.slide{position:relative;overflow:hidden;border-radius:2px;background:var(--ph)}
+.slide{position:relative;overflow:hidden;border-radius:2px;background:var(--ph);cursor:pointer}
 .art-media{position:relative;overflow:hidden;width:100%;display:block}
 .slide img{width:100%;height:auto;display:block;transition:filter 0.45s cubic-bezier(0.2, 0, 0.2, 1), transform 0.45s cubic-bezier(0.2, 0, 0.2, 1);transform-origin:center}
-.slide:hover img{filter:blur(6px) brightness(0.85);transform:scale(1.025)}
+
+/* Desktop Hover (active only when not clicked to hide) */
+@media (hover: hover) and (pointer: fine) {
+  .slide:hover:not(.hide-info) img {
+    filter: blur(6px) brightness(0.85);
+    transform: scale(1.025);
+  }
+  .slide:hover:not(.hide-info) .art-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+  .slide:hover:not(.hide-info) .art-details {
+    transform: translateY(0);
+  }
+}
+
+/* Click / Tap to show info (Touch screens) */
+.slide.show-info img {
+  filter: blur(6px) brightness(0.85) !important;
+  transform: scale(1.025) !important;
+}
+.slide.show-info .art-overlay {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.slide.show-info .art-details {
+  transform: translateY(0) !important;
+}
+
+/* Click to dismiss info and unblur immediately */
+.slide.hide-info img {
+  filter: none !important;
+  transform: none !important;
+}
+.slide.hide-info .art-overlay {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
 
 /* Hover Overlay */
 .art-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(42,51,34,0.72);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity 0.35s ease, visibility 0.35s ease;pointer-events:none}
-.slide:hover .art-overlay{opacity:1;visibility:visible}
 .art-details{text-align:center;color:#fff;max-width:92%;transform:translateY(10px);transition:transform 0.35s cubic-bezier(0.2, 0, 0.2, 1)}
-.slide:hover .art-details{transform:translateY(0)}
 .art-name{font-family:'Tenor Sans',sans-serif;font-size:1.4rem;font-weight:400;letter-spacing:0.04em;margin:0 0 8px;color:#fff}
 .art-rule{width:32px;height:1px;background:rgba(255,255,255,0.45);margin:0 auto 12px}
 .art-info-row{margin:6px 0;font-size:0.9rem;line-height:1.35;color:rgba(255,255,255,0.92)}
